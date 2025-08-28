@@ -8,14 +8,29 @@ const messages = [
 ];
 
 // Fonction pour générer un message de Bonne Année personnalisé
-function generateNewYearMessage(nom) {
+function generateNewYearMessage(nom, genre) {
     const randomIndex = Math.floor(Math.random() * messages.length);
-    return `Cher/Chère ${nom}, ${messages[randomIndex]}`;
+
+    const prefixes = {
+        male: "Cher",
+        female: "Chère"
+    };
+
+    const prefix = prefixes[genre] || "Cher/Chère"; // valeur par défaut si rien n'est choisi
+
+    return `${prefix} ${nom}, ${messages[randomIndex]}`;
 }
 
 // Fonction pour afficher le message
 function showMessage() {
     const nameInput = document.getElementById('nameInput').value;
-    const message = generateNewYearMessage(nameInput);
+    const gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+    if (!nameInput || !gender) {
+        document.getElementById('message').textContent = "⚠️ Merci d'entrer un nom et de choisir un genre.";
+        return;
+    }
+
+    const message = generateNewYearMessage(nameInput, gender);
     document.getElementById('message').textContent = message;
 }
